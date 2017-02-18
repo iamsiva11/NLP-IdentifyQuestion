@@ -10,3 +10,23 @@ Example:
 *  Is there a cab available for airport? Type: Affirmation
 *  There are ambiguous cases to handle as well like: What time does the train leave(this looks like a what question but is actually a When type)
 
+---
+
+## Requirements
+
+Python 2.7
+scikitlearn
+Keras
+
+---
+
+### Keras environment setup
+[Keras Theano Setup](https://gist.github.com/iamsiva11/c6086001b10af53b6931e7fe55ad069d)
+
+### Usage
+
+[ML Code](https://github.com/iamsiva11/NLP-IdentifyQuestion/blob/master/ML/README.md)
+
+[DL Code](https://github.com/iamsiva11/NLP-IdentifyQuestion/blob/master/DL/README.md)
+
+#Improvements
