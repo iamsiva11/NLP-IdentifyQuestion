@@ -19,9 +19,7 @@
 
 Random Forest Accuracy: 95.48
 
-['unknown' 'who' 'what' 'unknown' 'affirmation' 'what' 'when' 'affirmation'
- 'when' 'when']
-
+Predicted Classes:['unknown' 'who' 'what' 'unknown' 'affirmation' 'what' 'when' 'affirmation''when' 'when']
 
 ## Usage 
 python randomForest_model.py
