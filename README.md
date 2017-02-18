@@ -14,9 +14,9 @@ Example:
 
 ## Requirements
 
-Python 2.7
-scikitlearn
-Keras
+* Python 2.7
+* scikitlearn
+* Keras
 
 ---
 
@@ -25,8 +25,8 @@ Keras
 
 ### Usage
 
-[ML Code](https://github.com/iamsiva11/NLP-IdentifyQuestion/blob/master/ML/README.md)
+[ML Code](https://github.com/iamsiva11/NLP-IdentifyQuestion/blob/master/ML/)
 
-[DL Code](https://github.com/iamsiva11/NLP-IdentifyQuestion/blob/master/DL/README.md)
+[DL Code](https://github.com/iamsiva11/NLP-IdentifyQuestion/blob/master/DL/)
 
 #Improvements
