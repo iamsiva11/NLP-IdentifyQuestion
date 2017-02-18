@@ -5,7 +5,6 @@ from string import digits
 from sklearn.preprocessing import LabelEncoder
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
-
 from keras.models import Sequential
 from keras.layers import Dense, Input, Flatten, Dropout, Activation
 from keras.layers import  Embedding
@@ -13,7 +12,6 @@ from keras.layers.recurrent import SimpleRNN
 from keras.layers.recurrent import  LSTM, GRU
 from keras.layers.convolutional import Convolution1D
 from keras.layers import Conv1D, MaxPooling1D
-
 
 MAX_NB_WORDS = 5000
 MAX_SEQUENCE_LENGTH = 50
@@ -42,7 +40,6 @@ def remove_numbers(slist):
     res = map(lambda x: x.translate(None, digits), slist)
     return res
 
-
 #Encode labels
 def encode_labels(Y_Train):
     encoder = LabelEncoder()
@@ -51,16 +48,13 @@ def encode_labels(Y_Train):
     return  encoder, encoded_y
 
 def preapre_testData(X_Test,tok):
-    #X_Test= map(lambda x:x.lower,X_Test)
     X_Test = map(str.lower,X_Test)
     X_Test = remove_questionmark(X_Test)
     X_Test = map(str.rstrip,X_Test)
     X_Test = remove_numbers(X_Test)
-    #MAX_SEQUENCE_LENGTH = 50
     X_Test = tok.texts_to_sequences(X_Test)
     X_Test_pad = pad_sequences(X_Test, maxlen=MAX_SEQUENCE_LENGTH)
     return  X_Test_pad
-
 
 def tokenise_padding(X_Train):
     #we construct a tokenizer object, initialized with the number of total terms we want.
@@ -70,8 +64,7 @@ def tokenise_padding(X_Train):
     X_Train_pad = pad_sequences(X_Train, maxlen=MAX_SEQUENCE_LENGTH)
     return tok, X_Train_pad
 
-
-#Model Architecture -1
+#Model Architecture - 1
 def model_vanillaRNN():
     model = Sequential()
     model.add(Embedding(MAX_NB_WORDS, 32, input_length=MAX_SEQUENCE_LENGTH))
@@ -85,7 +78,7 @@ def model_vanillaRNN():
     model.compile(loss='sparse_categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
     return model
 
-#Model Architecture -2
+#Model Architecture - 2
 def model_lstm_cnn():
     model = Sequential()
     model.add(Embedding(MAX_NB_WORDS, 32, input_length=MAX_SEQUENCE_LENGTH))
@@ -106,8 +99,6 @@ def evaluate_model(model, train, test):
 def predict_classes(model, X_Test):
     res = rnn1.predict_classes(X_Test)
     print encoder.inverse_transform(res)    
-
-
 
 if __name__ == "__main__":
 	dataset_all = load_data('nikiai_train.csv')
@@ -135,19 +126,18 @@ if __name__ == "__main__":
 	"when was the last time you did something for the first time" ]	
 	X_Test_pad = preapre_testData(X_Test, tok)	
 
+	#Training
 	print "Model 1 - RNN - training starts "
 	rnn1 = model_vanillaRNN()
 	#print(rnn1.summary())
-	rnn1.fit(X_Train_pad, encoded_y, batch_size=32, nb_epoch=20, verbose=1)
-	
+	rnn1.fit(X_Train_pad, encoded_y, batch_size=32, nb_epoch=20, verbose=1)	
 	print "Model 2 - CNN and LSTM - training starts "
 	cnn_lstm1 = model_lstm_cnn()
 	#print(cnn_lstm1.summary()) 
 	cnn_lstm1.fit(X_Train_pad, encoded_y, batch_size=32, nb_epoch=20, verbose=1)
-
-    #Splitting dataset for Evaluation
-    split_X_train, split_X_test, split_y_train, split_y_test = train_test_split(X_Train_pad, encoded_y, random_state=33) 
-
+	
+	#Splitting dataset for Evaluation
+	split_X_train, split_X_test, split_y_train, split_y_test = train_test_split(X_Train_pad, encoded_y, random_state=33) 
 	evaluate_model(rnn1, split_X_train, split_y_train)
 	evaluate_model(cnn_lstm1, split_X_train, split_y_train)
 
