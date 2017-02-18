@@ -2,35 +2,34 @@
 
 # Model - 1 - Vanilla RNN
 	
-	Architecture
-	```
-	model = Sequential()
-    model.add(Embedding(MAX_NB_WORDS, 32, input_length=MAX_SEQUENCE_LENGTH))
-    model.add(Dropout(0.25))
-    model.add(SimpleRNN(16, return_sequences=False))
-    model.add(Dense(256))
-    model.add(Dropout(0.25))
-    model.add(Activation('relu'))
-    model.add(Dense(5))
-    model.add(Activation('softmax'))
-    model.compile(loss='sparse_categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
-    
-	```
+>Architecture
+```python
+model = Sequential()
+model.add(Embedding(MAX_NB_WORDS, 32, input_length=MAX_SEQUENCE_LENGTH))
+model.add(Dropout(0.25))
+model.add(SimpleRNN(16, return_sequences=False))
+model.add(Dense(256))
+model.add(Dropout(0.25))
+model.add(Activation('relu'))
+model.add(Dense(5))
+model.add(Activation('softmax'))
+model.compile(loss='sparse_categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])    
+```
 	
 ## Model - 2 CNN and LSTM
 
-	Architecture
-	```
-	model = Sequential()
-    model.add(Embedding(MAX_NB_WORDS, 32, input_length=MAX_SEQUENCE_LENGTH))
-    model.add(Dropout(0.25))
-    model.add(Convolution1D(nb_filter=32, filter_length=3, border_mode='same', activation='relu'))
-    model.add(MaxPooling1D(pool_length=2))
-    model.add(LSTM(100))
-    model.add(Dense(5))
-    model.add(Activation('softmax'))
-    model.compile(loss='sparse_categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
-	```
+>Architecture
+```python
+model = Sequential()
+model.add(Embedding(MAX_NB_WORDS, 32, input_length=MAX_SEQUENCE_LENGTH))
+model.add(Dropout(0.25))
+model.add(Convolution1D(nb_filter=32, filter_length=3, border_mode='same', activation='relu'))
+model.add(MaxPooling1D(pool_length=2))
+model.add(LSTM(100))
+model.add(Dense(5))
+model.add(Activation('softmax'))
+model.compile(loss='sparse_categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+```
 
 ## Input Test Data
 	"Name 11 famous martyrs",
@@ -46,7 +45,7 @@
 
 ##Accuracy
 	Model - 1 - Vanilla RNN accuracy: 99.82%
-	Model - 2 CNN and LSTM accuracy: 99.91%
+	Model - 2 - CNN and LSTM accuracy: 99.91%
 
 ## Output/Predictions
 
@@ -59,6 +58,6 @@
 	 'when' 'unknown']
 
 ## Usage 
-```
+```python
 python IdentifyQuestionType-keras.py
 ```	 
