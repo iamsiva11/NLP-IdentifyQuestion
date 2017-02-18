@@ -106,4 +106,4 @@ if __name__=="__main__":
 	#Make Predictions
 	y = rf_clf.predict(test_data_features)
 	decoded_labels = encoder.inverse_transform(y)
-	print decoded_labels 
+	print "Predicted Classes: {}".format(decoded_labels)
