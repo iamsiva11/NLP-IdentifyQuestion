@@ -1,6 +1,8 @@
-#RandomForest Classifier
+#Machine Learning Classifier Models
 
-## Accuracy : 95.48
+## Accuracy
+
+RandomForest Classifier - Accuracy : 95.48
 
 ## Input Test data
 
