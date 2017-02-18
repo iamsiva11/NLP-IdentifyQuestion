@@ -28,7 +28,6 @@ def remove_numbers(slist):
     res = map(lambda x: x.translate(None, digits), slist)
     return res
 
-
 def vectorise_featres(X_Train):
     vectorizer = CountVectorizer(analyzer="word", preprocessor=None, tokenizer=None, stop_words=None, max_features=5000)
     train_data_features = vectorizer.fit_transform(X_Train)
@@ -36,33 +35,25 @@ def vectorise_featres(X_Train):
     train_data_features = train_data_features.toarray()
     return vectorizer, train_data_features
 
-
 def preapare_test_data(X_Test):
 	#Preapre, Preprocess Test Data
 	X_Test= map(str.lower,X_Test)
 	X_Test = remove_questionmark(X_Test)
 	X_Test = map(str.rstrip,X_Test)
-	X_Test = remove_numbers(X_Test)
-
-	#Test data preapre
-	#vectorizer = CountVectorizer(analyzer="word", preprocessor=None, tokenizer=None, stop_words=None, max_features=5000)
+	X_Test = remove_numbers(X_Test)	
 	test_data_features = vectorizer.transform(X_Test)
 	# Numpy arrays are easy to work with, so convert the result to an array
 	test_data_features = test_data_features.toarray()
 	#print('The dimension of test_data_features is {}.'.format(test_data_features.shape))    
 	return test_data_features
 
-
 def run_rfClassifier():
     rf_clf = RandomForestClassifier(n_estimators=100, n_jobs=-1, random_state=0) 
-
     # Use cross validation to evaluate the performance of Random Forest
     rf_clf_error = cross_val_score(rf_clf, train_data_features, encoded_y, 
                                        cv=5, scoring='accuracy', n_jobs=-1).mean()
-
     print('Random Forest Accuracy: {:.4}'.format(rf_clf_error*100))
     return rf_clf	
-
 
 def encode_lables(Y_Train):
     encoder = LabelEncoder()
