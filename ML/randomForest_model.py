@@ -8,27 +8,32 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer
 
 def load_data(csv_file):
+	""" Load Data """
 	names = ["question", "type"]
 	dataset_all = pd.read_csv(csv_file,names=names)
 	return dataset_all
 
 def preapre_data(dataset_all):
+	""" Preapre data - get features and labels """
 	dataset=dataset_all.values
 	X_Train = dataset[:,0]
 	Y_Train = dataset[:,1]
 	return  X_Train,Y_Train
 
-def remove_questionmark(slist):
+def remove_questionmark(data):
+	""" Data Cleaning - removing question marks"""
     new_x = []
-    for x in slist:
+    for x in data:
          new_x.append(x.replace("?",""))
     return new_x
 
-def remove_numbers(slist):
-    res = map(lambda x: x.translate(None, digits), slist)
+def remove_numbers(data):
+	""" Data Cleaning - removing digits"""
+    res = map(lambda x: x.translate(None, digits), data)
     return res
 
-def vectorise_featres(X_Train):
+def vectorise_features(X_Train):
+	""" Vectorise the word features """
     vectorizer = CountVectorizer(analyzer="word", preprocessor=None, tokenizer=None, stop_words=None, max_features=5000)
     train_data_features = vectorizer.fit_transform(X_Train)
     # Numpy arrays are easy to work with, so convert the result to an array
@@ -36,7 +41,7 @@ def vectorise_featres(X_Train):
     return vectorizer, train_data_features
 
 def preapare_test_data(X_Test):
-	#Preapre, Preprocess Test Data
+	""" Preapre, Preprocess Test Data """
 	X_Test= map(str.lower,X_Test)
 	X_Test = remove_questionmark(X_Test)
 	X_Test = map(str.rstrip,X_Test)
@@ -44,31 +49,30 @@ def preapare_test_data(X_Test):
 	test_data_features = vectorizer.transform(X_Test)
 	# Numpy arrays are easy to work with, so convert the result to an array
 	test_data_features = test_data_features.toarray()
-	#print('The dimension of test_data_features is {}.'.format(test_data_features.shape))    
 	return test_data_features
 
 def run_rfClassifier():
+	""" Run random forest classifier """
     rf_clf = RandomForestClassifier(n_estimators=100, n_jobs=-1, random_state=0) 
-    # Use cross validation to evaluate the performance of Random Forest
+    #Cross validation to evaluate the performance of Random Forest
     rf_clf_error = cross_val_score(rf_clf, train_data_features, encoded_y, 
                                        cv=5, scoring='accuracy', n_jobs=-1).mean()
     print('Random Forest Accuracy: {:.4}'.format(rf_clf_error*100))
     return rf_clf	
 
 def encode_lables(Y_Train):
+	""" Encode output labels """
     encoder = LabelEncoder()
     encoder.fit(Y_Train)
     encoded_y = encoder.transform(Y_Train)
     return encoder, encoded_y
 
 if __name__=="__main__":
-	#Load Data
+	# Load Data
 	dataset_all = load_data('nikiai_train.csv')
-	
-	#Preape Data
+	# Preapre Data
 	X_Train, Y_Train = preapre_data(dataset_all)
-
-	#Preapre Test data
+	# Preapre Test data
 	X_Test=["Name 11 famous martyrs",
 	"Who was the inventor of silly putty ?",
 	"What 1920s cowboy star rode Tony the Wonder Horse ?",
@@ -79,22 +83,18 @@ if __name__=="__main__":
 	"Is there a cab available for airport?",
 	"What time does the train leave",
 	"when was the last time you did something for the first time" ]	
-	test_data_features = preapare_test_data(X_Test)
-	
-	#Clean Data
+	test_data_features = preapare_test_data(X_Test)	
+	# Clean Data
 	X_Train = remove_questionmark(X_Train)
 	X_Train = map(str.rstrip, X_Train)
 	X_Train = remove_numbers(X_Train)
-
-	#Encode Labels
+	# Encode Labels
 	encoder, encoded_y = encode_lables(Y_Train)
-	vectorizer, train_data_features = vectorise_featres(X_Train)
-
-	#Fit the Model 
+	vectorizer, train_data_features = vectorise_features(X_Train)
+	# Fit the Model 
 	rf_clf = run_rfClassifier()
 	rf_clf.fit(train_data_features, encoded_y)
-
-	#Make Predictions
+	# Make Predictions
 	y = rf_clf.predict(test_data_features)
 	decoded_labels = encoder.inverse_transform(y)
 	print "Predicted Classes: {}".format(decoded_labels)
